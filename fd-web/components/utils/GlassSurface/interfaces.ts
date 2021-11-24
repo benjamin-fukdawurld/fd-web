@@ -2,6 +2,10 @@ interface BaseGlassSurfaceProps {
   glassColor?: string;
   borderColor?: string;
   blur?: number;
+  saturate?: number;
+  brightness?: number;
+  contrast?: number;
+  hueRotate?: number;
 }
 
 const defaultProps = {

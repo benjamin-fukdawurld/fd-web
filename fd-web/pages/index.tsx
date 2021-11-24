@@ -32,42 +32,45 @@ interface IndexPageProps {
   };
 }
 
-export async function getStaticProps(): Promise<IndexPageProps> {
+async function fetchData(retry?: number): Promise<any> {
   const introductionRef = FireStoreApi.doc(
     backendApi.database,
     "introduction/EuXSqy14wJMWZbk0osOa"
   );
-  const introductionUnsubscribe = await getDoc(introductionRef);
-  const cardProps = introductionUnsubscribe.data() as IntroductionCardProps;
 
-  console.log(cardProps);
+  let i = 0;
+  do {
+    try {
+      const introductionUnsubscribe = await getDoc(introductionRef);
+      const cardProps = introductionUnsubscribe.data() as IntroductionCardProps;
 
-  const projectsQuery = FireStoreApi.query(
-    FireStoreApi.collection(backendApi.database, "projects")
-  );
-  let projects: ProjectProps[] = [];
-  (await getDocs(projectsQuery)).forEach((project) => {
-    projects.push(project.data() as ProjectProps);
-  });
+      const projectsQuery = FireStoreApi.query(
+        FireStoreApi.collection(backendApi.database, "projects")
+      );
+      let projects: ProjectProps[] = [];
+      const docs = await getDocs(projectsQuery);
+      docs.forEach((project) => {
+        projects.push(project.data() as ProjectProps);
+      });
 
+      return {
+        introduction: {
+          cardProps,
+        },
+        projects,
+      };
+    } catch (error) {
+      ++i;
+      console.log(`retry: ${i}/${retry ?? "NaN"}`);
+      if (!retry || i >= retry) {
+        throw error;
+      }
+    }
+  } while (true);
+}
+
+export async function getStaticProps(): Promise<IndexPageProps> {
   return {
-    props: {
-      introduction: {
-        cardProps,
-      },
-
-      projects: [
-        ...projects,
-        ...projects,
-        ...projects,
-        ...projects,
-        ...projects,
-        ...projects,
-        ...projects,
-        ...projects,
-        ...projects,
-        ...projects,
-      ],
-    },
+    props: await fetchData(10),
   };
 }

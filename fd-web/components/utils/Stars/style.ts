@@ -1,4 +1,5 @@
 import styled, { keyframes } from "styled-components";
+import IntersectionZone from "../IntersectionZone";
 
 import { StarsProps } from "./interfaces";
 
@@ -16,7 +17,8 @@ const StarsDiv = styled.div<StarsProps>`
   width: ${(props: StarsProps) => `${props.width}px`};
   height: ${(props: StarsProps) => `${props.height}px`};
   background: transparent;
-  animation: ${animStars} ${(props: StarsProps) => `${props.animationDuration}s`} linear infinite;
+  animation: ${animStars} ${(props: StarsProps) =>
+  `${props.animationDuration}s`} linear infinite paused;
   filter: blur(1px);
   box-shadow: ${({ shadow }: StarsProps) => shadow}
 

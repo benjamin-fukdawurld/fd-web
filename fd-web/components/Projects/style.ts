@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 import GlassSurface from "../utils/GlassSurface";
+import IntersectionZone from "../utils/IntersectionZone";
 
-const Container = styled.section`
+const Container = styled(IntersectionZone)`
   position: relative;
   width: 100%;
   background: radial-gradient(ellipse at bottom, #1b2735 0%, #0e0a0f 70%, #0e0a0f 100%);

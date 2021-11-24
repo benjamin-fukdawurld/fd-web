@@ -4,7 +4,9 @@ import { PictureContainer } from "./style";
 export default function Picture({ src }: { src: string }) {
   return (
     <PictureContainer>
-      <Image src={src} layout="fill" objectFit="cover" alt="Ben's face" />
+      <div>
+        <Image src={src} layout="fill" objectFit="cover" alt="Ben's face" />
+      </div>
     </PictureContainer>
   );
 }

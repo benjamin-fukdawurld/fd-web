@@ -1,6 +1,6 @@
 import { ReactNode, useRef } from "react";
 import { useEffect, useState } from "react";
-import { Container, StarsDiv } from "./style";
+import { Container as StarsContainer, StarsDiv } from "./style";
 import type { ShadowGeneratorOptions } from "./interfaces";
 
 function shadowGenerator({ color = "#fff", ...options }: ShadowGeneratorOptions) {
@@ -14,13 +14,12 @@ function shadowGenerator({ color = "#fff", ...options }: ShadowGeneratorOptions)
 }
 
 export default function Stars() {
-  const [windowWidth, setWindowWidth] = useState<number>(0);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
   const [stars, setStars] = useState<ReactNode[]>([]);
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    setWindowWidth(window.innerWidth);
-    const width = window.innerWidth;
+    setContainerWidth(ref.current?.offsetWidth || 1000);
     const height = ref.current?.offsetHeight || 1000;
 
     setStars([
@@ -29,21 +28,21 @@ export default function Stars() {
         width={1}
         height={1}
         animationDuration={75}
-        shadow={shadowGenerator({ count: 1000, maxX: width, maxY: height })}
+        shadow={shadowGenerator({ count: 1000, maxX: containerWidth, maxY: height })}
       />,
       <StarsDiv
         key={1}
         width={2}
         height={2}
         animationDuration={100}
-        shadow={shadowGenerator({ count: 500, maxX: width, maxY: height })}
+        shadow={shadowGenerator({ count: 500, maxX: containerWidth, maxY: height })}
       />,
       <StarsDiv
         key={2}
         width={3}
         height={3}
         animationDuration={150}
-        shadow={shadowGenerator({ count: 250, maxX: width, maxY: height })}
+        shadow={shadowGenerator({ count: 250, maxX: containerWidth, maxY: height })}
       />,
       ,
       <StarsDiv
@@ -51,10 +50,10 @@ export default function Stars() {
         width={4}
         height={4}
         animationDuration={200}
-        shadow={shadowGenerator({ count: 100, maxX: width, maxY: height })}
+        shadow={shadowGenerator({ count: 100, maxX: containerWidth, maxY: height })}
       />,
     ]);
-  }, [windowWidth]);
+  }, [containerWidth]);
 
-  return <Container ref={ref}>{stars}</Container>;
+  return <StarsContainer>{stars}</StarsContainer>;
 }

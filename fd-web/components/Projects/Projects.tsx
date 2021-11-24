@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { useRef } from "react";
+
 import styled, { keyframes } from "styled-components";
 
 import { Container, ProjectCard } from "./style";
@@ -65,8 +67,31 @@ function Project({ picture, title, paragraphs }: ProjectProps) {
 }
 
 export default function Projects(props: { projects: ProjectProps[] }) {
+  const ref = useRef<HTMLElement>(null);
+
   return (
-    <Container>
+    <Container
+      ref={ref}
+      root={null}
+      threshold={0.5}
+      onIntersection={(entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+        for (let entry of entries) {
+          if (!entry.isIntersecting && !entry.target.className.includes("StarsContainer")) {
+            continue;
+          }
+
+          if (entry.intersectionRatio >= observer.thresholds[0]) {
+            let current = entry.target.firstElementChild;
+            while (current) {
+              if (current.style) {
+                current.style.animationPlayState = "running";
+              }
+              current = current.nextElementSibling;
+            }
+          }
+        }
+      }}
+    >
       <Stars />
       <SpaceShips />
       {props.projects.map((project, index) => (

@@ -10,10 +10,9 @@ const PictureContainer = styled.div`
   clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
 
   & div {
-      margin: auto!important;
+      margin: 0.5rem auto 0!important;
       width: 90%;
       height: 90%;
-      margin: 0.2rem;
       clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
   }
 
