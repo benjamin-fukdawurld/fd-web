@@ -55,5 +55,5 @@ export default function Stars() {
     ]);
   }, [containerWidth]);
 
-  return <StarsContainer>{stars}</StarsContainer>;
+  return <StarsContainer ref={ref}>{stars}</StarsContainer>;
 }
