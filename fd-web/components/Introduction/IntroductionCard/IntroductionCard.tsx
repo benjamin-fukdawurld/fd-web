@@ -3,6 +3,10 @@ import type { IntroductionCardProps } from "./interfaces";
 
 import Picture from "../Picture";
 
+import ReactMarkdown from "react-markdown";
+import { ReactNode } from "react";
+import { ReactElement } from "react-markdown/lib/react-markdown";
+
 export default function IntroductionCard(props: IntroductionCardProps) {
   return (
     <Container
@@ -17,7 +21,16 @@ export default function IntroductionCard(props: IntroductionCardProps) {
       </CenteredContainer>
       <Title>{props.title}</Title>
       {props.paragraphs?.map((p, index) => (
-        <Paragraph key={index}>{p}</Paragraph>
+        <ReactMarkdown
+          key={index}
+          components={{
+            p({ children, ...props }) {
+              return <Paragraph {...props}>{children}</Paragraph>;
+            },
+          }}
+        >
+          {p}
+        </ReactMarkdown>
       ))}
     </Container>
   );
