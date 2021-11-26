@@ -1,43 +1,12 @@
 import Image from "next/image";
 import { useRef } from "react";
 
-import styled, { keyframes } from "styled-components";
+import ReactMarkdown from "react-markdown";
 
-import { Container, ProjectCard } from "./style";
+import { Container, ProjectCard, Picture, Title, TextContainer, Paragraph } from "./style";
 
 import Stars from "../utils/Stars";
 import SpaceShips from "../SpaceShips";
-
-const Picture = styled.div`
-  position: relative;
-  width: 100%;
-  min-height: 200px;
-  height: 50%;
-  overflow: hidden;
-  border: 5px solid rgba(0, 0, 255, 0.3);
-  border-radius: 1rem;
-  border-bottom-left-radius: 0.8rem;
-  border-bottom-right-radius: 0.8rem;
-  border-bottom: 5px solid rgba(0, 0, 255, 0.3);
-  opacity: 0.6;
-
-  box-shadow: 0px 20px 25px -5px rgba(0, 0, 255, 0.5);
-`;
-
-const Title = styled.h2`
-  padding-top: 2rem;
-  width: 100%;
-  text-align: center;
-  font-weight: 700;
-  font-size: 1.5rem;
-  line-height: 2rem;
-`;
-
-const TextContainer = styled.div`
-  padding: 1rem 1rem 2rem;
-`;
-
-const Paragraph = styled.p``;
 
 interface ProjectProps {
   picture: string;
@@ -59,7 +28,16 @@ function Project({ picture, title, paragraphs }: ProjectProps) {
       <Title>{title}</Title>
       <TextContainer>
         {paragraphs.map((p, index) => (
-          <Paragraph key={index}>{p}</Paragraph>
+          <ReactMarkdown
+            key={index}
+            components={{
+              p({ children, ...props }) {
+                return <Paragraph {...props}>{children}</Paragraph>;
+              },
+            }}
+          >
+            {p}
+          </ReactMarkdown>
         ))}
       </TextContainer>
     </ProjectCard>

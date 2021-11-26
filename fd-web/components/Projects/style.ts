@@ -65,4 +65,35 @@ const ProjectCard = styled(GlassSurface)`
   }
 `;
 
-export { Container, ProjectCard };
+const Picture = styled.div`
+  position: relative;
+  width: 100%;
+  min-height: 200px;
+  height: 50%;
+  overflow: hidden;
+  border: 5px solid rgba(0, 0, 255, 0.3);
+  border-radius: 1rem;
+  border-bottom-left-radius: 0.8rem;
+  border-bottom-right-radius: 0.8rem;
+  border-bottom: 5px solid rgba(0, 0, 255, 0.3);
+  opacity: 0.6;
+
+  box-shadow: 0px 20px 25px -5px rgba(0, 0, 255, 0.5);
+`;
+
+const Title = styled.h2`
+  padding-top: 2rem;
+  width: 100%;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 2rem;
+`;
+
+const TextContainer = styled.div`
+  padding: 1rem 1rem 2rem;
+`;
+
+const Paragraph = styled.p``;
+
+export { Container, ProjectCard, Picture, Title, TextContainer, Paragraph };
