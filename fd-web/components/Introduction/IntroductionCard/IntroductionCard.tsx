@@ -4,8 +4,6 @@ import type { IntroductionCardProps } from "./interfaces";
 import Picture from "../Picture";
 
 import ReactMarkdown from "react-markdown";
-import { ReactNode } from "react";
-import { ReactElement } from "react-markdown/lib/react-markdown";
 
 export default function IntroductionCard(props: IntroductionCardProps) {
   return (
