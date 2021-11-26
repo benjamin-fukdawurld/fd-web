@@ -23,7 +23,7 @@ function Project({ picture, title, paragraphs }: ProjectProps) {
       blur={3}
     >
       <Picture>
-        <Image src={picture} layout="fill" objectFit="cover" alt="mics pproject image" />
+        <Image src={picture} layout="fill" objectFit="cover" alt="mics project image" />
       </Picture>
       <Title>{title}</Title>
       <TextContainer>
