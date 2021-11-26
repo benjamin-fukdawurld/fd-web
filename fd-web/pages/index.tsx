@@ -1,3 +1,13 @@
+import path from "path";
+import { readdir, readFile } from "fs/promises";
+
+import matter from "gray-matter";
+
+import * as FireStoreApi from "firebase/firestore";
+import { getDoc, getDocs } from "firebase/firestore";
+
+import backendApi from "../firebase/BackendApi";
+
 import Page from "../components/utils/Page";
 import Introduction from "../components/Introduction";
 import Projects from "../components/Projects";
@@ -5,9 +15,6 @@ import Projects from "../components/Projects";
 import { IntroductionProps } from "../components/Introduction/interfaces";
 import { ProjectProps } from "../components/Projects/interfaces";
 
-import backendApi from "../firebase/BackendApi";
-import * as FireStoreApi from "firebase/firestore";
-import { getDoc, getDocs } from "firebase/firestore";
 import { IntroductionCardProps } from "../components/Introduction/IntroductionCard/interfaces";
 
 export default function IntroductionPage(props: {
@@ -69,8 +76,43 @@ async function fetchData(retry?: number): Promise<any> {
   } while (true);
 }
 
-export async function getStaticProps(): Promise<IndexPageProps> {
-  return {
-    props: await fetchData(10),
+async function fetchDataLocal(): Promise<IndexPageProps> {
+  const dataDirectory = path.join(process.cwd(), "data");
+  const cardMatter = matter(
+    await readFile(path.join(dataDirectory, "introduction-card.md"), "utf-8")
+  );
+  const introduction: IntroductionProps = {
+    cardProps: {
+      title: cardMatter.data.title,
+      picture: cardMatter.data.picture,
+      paragraphs: [cardMatter.content],
+    },
   };
+
+  const projectsDir = path.join(dataDirectory, "projects");
+  const projectsFiles = await (
+    await readdir(projectsDir)
+  ).map((fileName: string) => path.join(projectsDir, fileName));
+
+  const projects = await Promise.all(
+    projectsFiles.map(async (fileName): Promise<ProjectProps> => {
+      const matterResult = matter(await readFile(fileName, "utf-8"));
+      return {
+        title: matterResult.data.title,
+        picture: matterResult.data.picture,
+        paragraphs: [matterResult.content],
+      };
+    })
+  );
+
+  return {
+    props: {
+      introduction,
+      projects,
+    },
+  };
+}
+
+export async function getStaticProps(): Promise<IndexPageProps> {
+  return await fetchDataLocal(); //fetchData(10),
 }
