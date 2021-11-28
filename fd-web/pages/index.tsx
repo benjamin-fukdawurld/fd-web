@@ -9,13 +9,14 @@ import { getDoc, getDocs } from "firebase/firestore";
 import backendApi from "../firebase/BackendApi";
 
 import Page from "../components/utils/Page";
-import Introduction from "../components/Introduction";
-import Projects from "../components/Projects";
+import Introduction from "../components/sections/Landing/Introduction";
+import Projects from "../components/sections/Projects";
 
-import { IntroductionProps } from "../components/Introduction/interfaces";
-import { ProjectProps } from "../components/Projects/interfaces";
+import { IntroductionProps } from "../components/sections/Landing/Introduction/interfaces";
+import { ProjectProps } from "../components/sections/Projects/interfaces";
 
-import { IntroductionCardProps } from "../components/Introduction/IntroductionCard/interfaces";
+import { IntroductionCardProps } from "../components/sections/Landing/Introduction/IntroductionCard/interfaces";
+import CloudBanner from "../components/utils/CloudBanner";
 
 export default function IntroductionPage(props: {
   introduction: IntroductionProps;
@@ -27,7 +28,22 @@ export default function IntroductionPage(props: {
       description={"Portflio de Benjamin ZAMOUR"}
     >
       <Introduction {...props.introduction} />
+      <CloudBanner invert={100} brightness={40} contrast={200} opacity={65}>
+        Projets
+      </CloudBanner>
       <Projects projects={props.projects} />
+      <CloudBanner brightness={90} contrast={200} opacity={25}>
+        Formation
+      </CloudBanner>
+      <div
+        style={{
+          minHeight: "100vh",
+          background:
+            "linear-gradient(#fff 0%, #77f 30%)," +
+            "radial-gradient(ellipse at top, #eef 0%, #ccf 5%, #ccf 15%,  #aaf 25%, #77f 70%)",
+          backgroundBlendMode: "lighten",
+        }}
+      ></div>
     </Page>
   );
 }

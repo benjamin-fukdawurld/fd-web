@@ -1,44 +1,15 @@
-import SolarSystemComponent from "../components/SolarSystemComponent";
+import SolarSystemComponent from "../components/sections/Landing/SolarSystemComponent";
 import Page from "../components/utils/Page";
 
 import styled, { keyframes } from "styled-components";
 
 import Image from "next/image";
 
-//<a href='https://www.freepik.com/vectors/light'>Light vector created by upklyak - www.freepik.com</a>
-interface CloudProps {
-  imgIndex: number;
-  index: number;
-}
+import CloudBanner from "../components/CloudBanner/CloudBanner";
 
-const cloudAnim = keyframes`
-  0% {
-    opacity: 0;
-    transform: translateX(-50%);
-  }
+import { CloudProps } from "../components/CloudBanner/interfaces";
 
-  10% {
-    opacity: 0.75;
-    transform: translateX(-30%);
-  }
-
-  25% {
-    opacity: 1;
-    transform: translateX(0%);
-  }
-
-  75% {
-    opacity: 1;
-    transform: translateX(100%);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateX(150%);
-  }
-`;
-
-const Clouds = styled.div`
+export const Clouds = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
@@ -47,36 +18,101 @@ const Clouds = styled.div`
   overflow: hidden;
 `;
 
-const Container = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100vh;
-`;
+const cloudAnim2 = (index: number, count: number) => keyframes`
+  0% {
+    transform: translateX(-${100 * index}%)
+  }
 
-const CloudDiv = styled.div<CloudProps>`
-  position: absolute;
-  top: 0;
-  max-width: 100%;
-  height: 30vh;
-  animation: ${cloudAnim} calc(5s * ${(props: CloudProps) => Math.log10(props.imgIndex * 500)})
-    calc(1s * ${(props: CloudProps) => props.index}) both linear infinite;
-
-  img {
-    filter: blur(0px) invert(1%) brightness(40%) contrast(200%) opacity(75%);
+  100% {
+    transform: translateX(${100 * (count - index - 1)}%)
   }
 `;
 
-function Cloud(props: CloudProps) {
+const CloudDiv_ = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(0px) invert(1%) brightness(40%) contrast(200%) opacity(75%);
+`;
+
+const CloudImage = styled.img<CloudProps>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: ${({ index, count }: CloudProps) => cloudAnim2(index, count)} 25s linear infinite both;
+  max-width: inherit;
+  width: 100%;
+  min-width: 100%;
+  min-height: 100%;
+`;
+
+export function Cloud() {
   return (
-    <CloudDiv {...props}>
-      <img src={`/images/cloud${props.imgIndex}.png`} alt={`cloud image ${props.index}`} />
-    </CloudDiv>
+    <CloudDiv_>
+      <CloudImage src={`/images/cloud_.png`} alt={`cloud image`} index={0} count={2} />
+      <CloudImage src={`/images/cloud_.png`} alt={`cloud image`} index={1} count={2} />
+    </CloudDiv_>
   );
 }
 
-const Banner = styled.div`
+const Container = styled.div`
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+`;
+
+export const BannerContainer = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`;
+
+export const Banner = styled.div`
+  position: absolute;
   height: 30vh;
   width: 100%;
+  bottom: 0;
+`;
+
+export const BannerTitle = styled.h2`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: 4rem;
+
+  @media (min-width: 400px) and (max-width: 607px) {
+    font-size: 5rem;
+  }
+
+  @media (min-width: 608px) {
+    font-size: 6rem;
+  }
+
+  color: transparent;
+  background-color: rgba(255, 255, 255, 0.3);
+  background-clip: text;
+  -webkit-background-clip: text;
+`;
+
+const Content = styled.div`
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+`;
+
+const Tmp = styled.div`
+  width: 100%;
+  height: 100vh;
 `;
 
 export default function Admin(props: any) {
@@ -87,21 +123,9 @@ export default function Admin(props: any) {
     >
       <Container>
         <SolarSystemComponent />
+        <CloudBanner>Projects</CloudBanner>
       </Container>
-
-      <Clouds>
-        <Cloud imgIndex={1} index={1} />
-        <Cloud imgIndex={2} index={2} />
-        <Cloud imgIndex={3} index={3} />
-        <Cloud imgIndex={4} index={4} />
-        <Cloud imgIndex={5} index={5} />
-        <Cloud imgIndex={1} index={10} />
-        <Cloud imgIndex={2} index={9} />
-        <Cloud imgIndex={3} index={8} />
-        <Cloud imgIndex={4} index={7} />
-        <Cloud imgIndex={5} index={6} />
-      </Clouds>
-      <Banner></Banner>
+      <Tmp />
     </Page>
   );
 }
