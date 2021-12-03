@@ -23,10 +23,11 @@ export default class RenderEngine implements IRenderEngine {
     this._container = options.container;
     this._renderer = new THREE.WebGLRenderer({
       antialias: true,
-      depth: true,
+      stencil: false,
       logarithmicDepthBuffer: true,
       powerPreference: "high-performance",
     });
+    this.renderer.sortObjects = false;
     this._state = RenderEngineState.NotInitialized;
 
     this._lastUpdate = 0;

@@ -44,4 +44,31 @@ const Paragraph = styled.p`
   color: transparent;
 `;
 
-export { Container, Title, CenteredContainer, Paragraph };
+const CardContainer = styled(GlassSurface)`
+  grid-row-start: 2;
+  grid-row-end: span 4;
+  grid-column-start: 2;
+  grid-column-end: span 10;
+
+  @media (min-width: 768px) {
+    grid-column-start: 4;
+    grid-column-end: span 6;
+    grid-row-end: span 4;
+  }
+
+  @media (min-width: 1200px) {
+    grid-column-start: 5;
+    grid-column-end: span 4;
+    grid-row-end: span 2;
+  }
+
+  border-radius: 0.5rem;
+  border-width: 5px;
+
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+`;
+
+export { Container, Title, CenteredContainer, Paragraph, CardContainer };

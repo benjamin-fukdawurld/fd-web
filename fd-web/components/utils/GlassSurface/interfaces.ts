@@ -1,4 +1,5 @@
 interface BaseGlassSurfaceProps {
+  as?: string | React.ComponentType<any>;
   glassColor?: string;
   borderColor?: string;
   blur?: number;
@@ -9,6 +10,7 @@ interface BaseGlassSurfaceProps {
 }
 
 const defaultProps = {
+  as: "div",
   glassColor: "rgba(255, 255, 255, 0.2)",
   borderColor: "rgba(255, 255, 255, 1)",
   blur: 10,

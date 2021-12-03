@@ -26,8 +26,8 @@ const SpaceShipContainer = styled.div<SpaceShipContainerProps>`
   width: ${(props: SpaceShipContainerProps) => props.width}px;
   height: ${(props: SpaceShipContainerProps) => props.height}px;
   animation: ${(props: SpaceShipContainerProps) => moveSpaceShipX(props.mirrored ? -1 : 1)}
-    ${(props: SpaceShipContainerProps) => 5 / props.speed}s
-    ${(props: SpaceShipContainerProps) => (props.delay ? `${props.delay}s` : "")} ease-in;
+    ${(props: SpaceShipContainerProps) => 10 / props.speed}s
+    ${(props: SpaceShipContainerProps) => (props.delay ? `${props.delay}s` : "")} ease-in infinite;
 
   animation-play-state: paused;
 

@@ -18,7 +18,7 @@ const Banner = styled.div`
   top: -10vh;
 
   background: rgba(255, 255, 255, 0.015);
-  backdrop-filter: blur(20px) saturate(120%);
+  backdrop-filter: blur(10px) saturate(120%);
 
   @media (min-width: 768px) {
     height: 24vh;
@@ -45,7 +45,7 @@ const BannerTitle = styled.h2`
   }
 
   color: transparent;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(196, 196, 196, 0.9);
   background-clip: text;
   -webkit-background-clip: text;
 `;

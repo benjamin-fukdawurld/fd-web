@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import * as THREE from "three";
 
@@ -15,7 +15,12 @@ const SolarSystemContainer = styled.div`
   background-color: black;
 `;
 
-export default function SolarSystemComponent(props: any) {
+interface SolarSystemComponentProps {
+  children?: ReactNode;
+  onLoaded?: (system: SolarSystem) => void;
+}
+
+export default function SolarSystemComponent(props: SolarSystemComponentProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isLoaded, setLoaded] = useState<boolean>(false);
 
@@ -49,6 +54,10 @@ export default function SolarSystemComponent(props: any) {
     );
 
     solarSystem.load(sceneMgr, engine).then(() => {
+      if (props.onLoaded) {
+        props.onLoaded(solarSystem);
+      }
+
       engine.start((env) => {
         const deltaTime = env.engine.deltaTime;
         solarSystem.update(engine, deltaTime);

@@ -5,11 +5,12 @@ import matter from "gray-matter";
 
 import * as FireStoreApi from "firebase/firestore";
 import { getDoc, getDocs } from "firebase/firestore";
+import styled, { keyframes } from "styled-components";
 
 import backendApi from "../firebase/BackendApi";
 
 import Page from "../components/utils/Page";
-import Introduction from "../components/sections/Landing/Introduction";
+import Introduction from "../components/sections/Landing";
 import Projects from "../components/sections/Projects";
 
 import { IntroductionProps } from "../components/sections/Landing/Introduction/interfaces";
@@ -17,6 +18,17 @@ import { ProjectProps } from "../components/sections/Projects/interfaces";
 
 import { IntroductionCardProps } from "../components/sections/Landing/Introduction/IntroductionCard/interfaces";
 import CloudBanner from "../components/utils/CloudBanner";
+import Banner from "../components/utils/Banner";
+
+const WaterWave = styled.div`
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(#55f 0%, #33f 30%),
+    radial-gradient(ellipse at top, #66f 0%, #63f 5%, #55f 15%, #55f 25%, #33f 70%);
+  background-blend-mode: lighten;
+  overflow: hidden;
+`;
 
 export default function IntroductionPage(props: {
   introduction: IntroductionProps;
@@ -43,7 +55,9 @@ export default function IntroductionPage(props: {
             "radial-gradient(ellipse at top, #eef 0%, #ccf 5%, #ccf 15%,  #aaf 25%, #77f 70%)",
           backgroundBlendMode: "lighten",
         }}
-      ></div>
+      />
+      <Banner>Divers</Banner>
+      <WaterWave />
     </Page>
   );
 }
@@ -98,7 +112,7 @@ async function fetchDataLocal(): Promise<IndexPageProps> {
     await readFile(path.join(dataDirectory, "introduction-card.md"), "utf-8")
   );
   const introduction: IntroductionProps = {
-    cardProps: {
+    introductionCardProps: {
       title: cardMatter.data.title,
       picture: cardMatter.data.picture,
       paragraphs: [cardMatter.content],

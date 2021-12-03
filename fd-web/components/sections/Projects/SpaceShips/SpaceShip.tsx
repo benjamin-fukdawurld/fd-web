@@ -10,7 +10,7 @@ export default function SpaceShip(props: SpaceShipProps) {
       y={props.y}
       width={props.width}
       height={props.height}
-      speed={1}
+      speed={props.speed}
       delay={props.delay}
       mirrored={props.mirrored}
     >

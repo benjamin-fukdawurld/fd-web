@@ -20,6 +20,7 @@ const SpaceShipRow = styled.div<SpaceShipRowProps>`
 `;
 
 interface SpaceShipsGeneratorOptions {
+  h: number;
   offsetY: number;
   delay?: number;
   yDelta?: number;
@@ -35,11 +36,11 @@ function SpaceShipsGenerator(props: SpaceShipsGeneratorOptions) {
   const mirrored = Math.random() > 0.5;
   const size = type === 1 ? 64 : 128;
   const speed = 1 + (Math.random() - 0.5);
-  const delay = Math.random();
+  const delay = 0.5 + Math.random();
 
   return (
-    <SpaceShipRow w="100%" h="10%">
-      {[...Array(Math.floor(Math.random() * 5 + 1))].map(() => (
+    <SpaceShipRow w="100%" h={`${props.h}px`}>
+      {[...Array(Math.floor(Math.random() * 3 + 1))].map(() => (
         <SpaceShip
           key={`${type}-${mirrored}-size-${Math.floor(Math.random() * 10001)}`}
           type={type}
@@ -47,8 +48,8 @@ function SpaceShipsGenerator(props: SpaceShipsGeneratorOptions) {
           y={props.offsetY + Math.random() * (props.yDelta ?? size)}
           width={size}
           height={size}
-          speed={speed + addDelta(props.speedDelta ?? 0.25)}
-          delay={delay + addDelta(props.delayDelta ?? 0.25)}
+          speed={speed + addDelta(props.speedDelta ?? 0.125)}
+          delay={delay + addDelta(props.delayDelta ?? 0.5)}
           mirrored={mirrored}
         />
       ))}
@@ -57,18 +58,33 @@ function SpaceShipsGenerator(props: SpaceShipsGeneratorOptions) {
 }
 
 export default function SpaceShips() {
-  const ships = [...Array(10)].map((undefined, index: number) => (
-    <SpaceShipsGenerator
-      key={index}
-      offsetY={0}
-      yDelta={512}
-      delay={Math.random() * 1.5}
-      speedDelta={0.8}
-    />
-  ));
+  const [ships, setShips] = useState<SpaceShipsGeneratorOptions[]>([]);
+  const [containerHeight, setContainerHeight] = useState<number>(0);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!ref.current || !ref.current.offsetHeight) {
+      return;
+    }
+
+    setContainerHeight(ref.current.offsetHeight);
+    const rowHeight = 256;
+    const rowCount = Math.floor(containerHeight / rowHeight);
+
+    setShips(
+      [...Array(rowCount)].map((undefined, index: number) => ({
+        h: 256,
+        offsetY: 0,
+        yDelta: 512,
+        delay: Math.random() * 1.5,
+        speedDelta: 0.8,
+      }))
+    );
+  }, [containerHeight]);
 
   return (
     <SpaceShipsContainer
+      ref={ref}
       root={null}
       threshold={0.5}
       onIntersection={(entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
@@ -80,6 +96,7 @@ export default function SpaceShips() {
           let spaceship = entry.target.firstElementChild;
           while (spaceship) {
             let current = spaceship;
+            console.log(current.className);
             (current as HTMLElement).style.animationPlayState = "running";
             current.addEventListener("animationend", () => {
               (current as HTMLElement).style.animationPlayState = "paused";
@@ -90,7 +107,9 @@ export default function SpaceShips() {
         }
       }}
     >
-      {ships}
+      {ships.map((shipProps: SpaceShipsGeneratorOptions, index: number) => (
+        <SpaceShipsGenerator key={index} {...shipProps} />
+      ))}
     </SpaceShipsContainer>
   );
 }

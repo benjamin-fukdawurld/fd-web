@@ -19,7 +19,7 @@ export default function Header(props: any) {
       </LeftPanel>
       <RightPanel>
         <ProfileImage>
-          <Image src="/images/profile.jpg" layout="fill" objectFit="cover" alt="profile image" />
+          <Image src="/images/profile.webp" layout="fill" objectFit="cover" alt="profile image" />
         </ProfileImage>
       </RightPanel>
     </HeaderContainer>

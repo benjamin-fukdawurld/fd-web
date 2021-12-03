@@ -1,14 +1,16 @@
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter";
 
 import * as THREE from "three";
 
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass";
 
 import SceneManager from "../SceneManager";
 import RenderEngine from "../RenderEngine";
+
+import { GlitchShader } from "./GlitchShader";
 
 export default class SolarSystem {
   private _root?: THREE.Object3D;
@@ -77,6 +79,7 @@ export default class SolarSystem {
 
   async load(sceneMgr: SceneManager, engine: RenderEngine): Promise<GLTF> {
     const loader = new GLTFLoader();
+    console.time("load3d");
     return loader
       .loadAsync("/3d/solar-system/scene2.gltf", (xhr: ProgressEvent) => {})
       .then(async (gltf: GLTF): Promise<GLTF> => {
@@ -85,10 +88,25 @@ export default class SolarSystem {
           return gltf;
         }
 
+        const glitchPass = new ShaderPass(GlitchShader);
+        engine.renderer.getSize(glitchPass.uniforms.iResolution.value);
+        const renderFunc = glitchPass.render.bind(glitchPass);
+        glitchPass.render = (
+          renderer: THREE.WebGLRenderer,
+          writeBuffer: THREE.WebGLRenderTarget,
+          readBuffer: THREE.WebGLRenderTarget,
+          deltaTime: number,
+          maskActive: boolean
+        ) => {
+          glitchPass.uniforms.iTime.value += deltaTime;
+          renderFunc(renderer, writeBuffer, readBuffer, deltaTime, maskActive);
+        };
+
         sceneMgr.scene.add(this._root);
         this._composer = new EffectComposer(engine.renderer);
         this._composer.addPass(engine.getRenderPass(sceneMgr.scene, sceneMgr.camera));
         this.addBloom(engine);
+        this._composer.addPass(glitchPass);
         this._composer.addPass(engine.getFxaaPass());
 
         engine.renderer.outputEncoding = THREE.sRGBEncoding;
