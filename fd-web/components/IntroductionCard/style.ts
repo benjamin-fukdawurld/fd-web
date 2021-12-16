@@ -1,7 +1,9 @@
 import styled, { keyframes } from "styled-components";
 
 import StyledCard, { CardProps } from "../../glass-ui/Card";
-import Surface, { SurfaceProps } from "../../glass-ui/Surface";
+import GlassSurface from "../../glass-ui/GlassSurface";
+
+import { IntroductionCardProps } from "./interfaces";
 
 const pulseAnim = keyframes`
   0% {
@@ -21,6 +23,17 @@ const pulseAnim = keyframes`
   }
   100% {
     transform: scale(0.95);
+  }
+`;
+
+const entranceAnim = keyframes`
+  0% {
+    transform: translateZ(600px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateZ(0);
+    opacity: 1;
   }
 `;
 
@@ -93,7 +106,7 @@ const Card = styled(StyledCard)<CardProps>`
     }
 `;
 
-const IntroductionCardContainer = styled(Surface)<SurfaceProps>`
+const IntroductionCardContainer = styled(GlassSurface)<IntroductionCardProps>`
   position: relative;
   margin: 1rem 1rem 2rem;
 
@@ -103,14 +116,17 @@ const IntroductionCardContainer = styled(Surface)<SurfaceProps>`
     width: 100%;
     height: 100%;
     border-radius: 0.5rem;
-    backdrop-filter: brightness(30%);
     background: ${(props) => props.theme.palette.secondary.main.darken(0.2).alpha(0.2).string()};
     box-shadow: 0 0 15px 0px ${(props) => props.theme.palette.secondary.dark.alpha(0.6).string()},
       0 0 20px 0px ${(props) => props.theme.palette.secondary.dark.darken(0.2).alpha(0.4).string()},
       0 0 25px 2px ${(props) => props.theme.palette.primary.main.alpha(0.2).string()};
 
-    animation: ${pulseAnim} 1.2s infinite linear;
+    animation: ${pulseAnim} 1.2s infinite linear
+      ${(props) => (props.visible ? "running" : "paused")};
   }
+
+  animation: ${entranceAnim} 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both
+    ${(props) => (props.visible ? "running" : "paused")};
 `;
 
 export { Card, IntroductionCardContainer };
