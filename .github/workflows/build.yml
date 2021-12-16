@@ -1,0 +1,16 @@
+name: Build next.js
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Building docker image
+        run: docker build -t fd-web ./fd-web
+
+      - name: Run tests
+        run: docker run --name fd-web -p 3001:3000 fd-web yarn test
