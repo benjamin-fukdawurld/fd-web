@@ -1,9 +1,24 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Surface, { SurfaceProps } from "../../glass-ui/Surface";
+
+const entranceAnim = keyframes`
+  0% {
+    transform: scaleX(0);
+    filter: blur(4px);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    filter: blur(0);
+    opacity: 1;
+  }
+`;
 
 const ContactButton = styled(Surface)<SurfaceProps>`
   position: relative;
   margin-bottom: 4rem;
+
+  animation: ${entranceAnim} 1s 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 
   &::before {
     content: "";

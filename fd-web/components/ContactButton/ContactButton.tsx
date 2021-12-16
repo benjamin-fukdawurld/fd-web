@@ -5,11 +5,12 @@ import Button from "../../glass-ui/Button";
 import { ContactButton as StyledButton } from "./style";
 
 import { useTheme } from "styled-components";
+import { forwardRef } from "react";
 
-export default function ContactButton() {
+const ContactButton = forwardRef<HTMLElement, any>((props, ref) => {
   const theme = useTheme();
   return (
-    <StyledButton>
+    <StyledButton ref={ref} {...props}>
       <Link href="/contact" passHref>
         <Button forwardedAs="a" theme={theme}>
           Contact
@@ -17,4 +18,8 @@ export default function ContactButton() {
       </Link>
     </StyledButton>
   );
-}
+});
+
+ContactButton.displayName = "ContactButton";
+
+export default ContactButton;
