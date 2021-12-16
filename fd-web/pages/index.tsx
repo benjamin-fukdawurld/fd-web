@@ -1,148 +1,125 @@
-import path from "path";
-import { readdir, readFile } from "fs/promises";
-
-import matter from "gray-matter";
-
-import * as FireStoreApi from "firebase/firestore";
-import { getDoc, getDocs } from "firebase/firestore";
 import styled, { keyframes } from "styled-components";
+import Page from "../components/Page";
+import GlassSurface, { GlassSurfaceProps } from "../glass-ui/GlassSurface";
+import UiSurface, { SurfaceProps } from "../glass-ui/Surface";
+import Section from "../glass-ui/Section";
+import { SizeName } from "../styles/utils";
+import LandingSection from "../components/LandingSection/LandingSection";
 
-import backendApi from "../firebase/BackendApi";
+const Surface = styled(GlassSurface)<GlassSurfaceProps>`
+  background-color: ${(props) => props.theme.palette.primary.main.alpha(0.05).string()};
+  border: solid 5px ${(props) => props.theme.palette.primary.main.alpha(0.15).string()};
+`;
 
-import Page from "../components/utils/Page";
-import Introduction from "../components/sections/Landing";
-import Projects from "../components/sections/Projects";
-
-import { IntroductionProps } from "../components/sections/Landing/Introduction/interfaces";
-import { ProjectProps } from "../components/sections/Projects/interfaces";
-
-import { IntroductionCardProps } from "../components/sections/Landing/Introduction/IntroductionCard/interfaces";
-import CloudBanner from "../components/utils/CloudBanner";
-import Banner from "../components/utils/Banner";
-
-const WaterWave = styled.div`
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-  background: linear-gradient(#55f 0%, #33f 30%),
-    radial-gradient(ellipse at top, #66f 0%, #63f 5%, #55f 15%, #55f 25%, #33f 70%);
-  background-blend-mode: lighten;
+const StyledSection = styled(Section)`
+  background-color: ${(props) => props.theme.palette.common.black.darken(0.25).string()};
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
 `;
 
-export default function IntroductionPage(props: {
-  introduction: IntroductionProps;
-  projects: ProjectProps[];
-}) {
+function* randGen(): Generator<number, never, never> {
+  while (1) {
+    yield Math.random();
+  }
+
+  throw new Error("This must never happen");
+}
+
+const rand = randGen();
+
+const glowAnim = () => keyframes`
+  0% {
+    transform: translate(${rand.next().value * 100}vw, ${rand.next().value * 100}vh) scale(${
+  rand.next().value + 0.25
+}, ${rand.next().value + 0.25}) rotate(${rand.next().value * 2 * 360 - 360}deg) skew(${
+  rand.next().value * 2 * 15 - 15
+}deg, ${rand.next().value * 2 * 15 - 15}deg);
+  }
+  
+  ${Math.floor(rand.next().value * 10) + 20}% {
+    transform: translate(${rand.next().value * 100}vw, ${rand.next().value * 100}vh) scale(${
+  rand.next().value + 0.25
+}, ${rand.next().value + 0.25}) rotate(${rand.next().value * 2 * 360 - 360}deg) skew(${
+  rand.next().value * 2 * 15 - 15
+}deg, ${rand.next().value * 2 * 15 - 15}deg);
+  }
+
+  ${Math.floor(rand.next().value * 10) + 40}% {
+    transform: translate(${rand.next().value * 100}vw, ${rand.next().value * 100}vh) scale(${
+  rand.next().value + 0.25
+}, ${rand.next().value + 0.25}) rotate(${rand.next().value * 2 * 360 - 360}deg) skew(${
+  rand.next().value * 2 * 15 - 15
+}deg, ${rand.next().value * 2 * 15 - 15}deg);
+  }
+
+  ${Math.floor(rand.next().value * 10) + 60}% {
+    transform: translate(${rand.next().value * 100}vw, ${rand.next().value * 100}vh) scale(${
+  rand.next().value + 0.25
+}, ${rand.next().value + 0.25}) rotate(${rand.next().value * 2 * 360 - 360}deg) skew(${
+  rand.next().value * 2 * 15 - 15
+}deg, ${rand.next().value * 2 * 15 - 15}deg);
+  }
+
+  ${Math.floor(rand.next().value * 10) + 80}% {
+    transform: translate(${rand.next().value * 100}vw, ${rand.next().value * 100}vh) scale(${
+  rand.next().value + 0.25
+}, ${rand.next().value + 0.25}) rotate(${rand.next().value * 2 * 360 - 360}deg) skew(${
+  rand.next().value * 2 * 15 - 15
+}deg, ${rand.next().value * 2 * 15 - 15}deg);
+  }
+
+  100% {
+    transform: translate(${rand.next().value * 100}vw, ${rand.next().value * 100}vh) scale(${
+  rand.next().value + 0.25
+}, ${rand.next().value + 0.25}) rotate(${rand.next().value * 2 * 360 - 360}deg) skew(${
+  rand.next().value * 2 * 15 - 15
+}deg, ${rand.next().value * 2 * 15 - 15}deg);
+  }
+`;
+
+const Tip = styled(UiSurface)<SurfaceProps>`
+  animation: ${(props) => glowAnim()} 5s linear alternate both infinite;
+  background-color: ${(props) =>
+    props.theme.palette.primary.main
+      .rotate(rand.next().value * 90 - 45)
+      .alpha(Math.random() / 2 + 0.2)
+      .string()};
+  border-radius: 100%;
+  box-shadow: 0 0 75px 55px
+      ${(props) => props.theme.palette.primary.dark.rotate(rand.next().value * 90 - 45).string()},
+    0 0 55px 35px ${(props) => props.theme.palette.common.white.alpha(0.4).string()};
+`;
+
+export default function Home(props: any) {
   return (
     <Page
-      title={"Benjamin ZAMOUR - Fanatik Development"}
-      description={"Portflio de Benjamin ZAMOUR"}
+      title="Tableau de bord - Fanatik Development"
+      description="Indicateurs et gestion de contenu de FD"
     >
-      <Introduction {...props.introduction} />
-      <CloudBanner invert={100} brightness={40} contrast={200} opacity={65}>
-        Projets
-      </CloudBanner>
-      <Projects projects={props.projects} />
-      <CloudBanner brightness={90} contrast={200} opacity={25}>
-        Formation
-      </CloudBanner>
-      <div
-        style={{
-          minHeight: "100vh",
-          background:
-            "linear-gradient(#fff 0%, #77f 30%)," +
-            "radial-gradient(ellipse at top, #eef 0%, #ccf 5%, #ccf 15%,  #aaf 25%, #77f 70%)",
-          backgroundBlendMode: "lighten",
-        }}
-      />
-      <Banner>Divers</Banner>
-      <WaterWave />
+      <LandingSection />
+      <StyledSection position="relative" z={3}>
+        {[...Array(10)].map((undefined, index) => (
+          <Tip
+            key={index}
+            position="absolute"
+            w="15rem"
+            h="15rem"
+            t="0"
+            l="0"
+            backdropFilter={[
+              {
+                name: "hue-rotate",
+                value: rand.next().value * 360,
+                unit: "deg",
+              },
+            ]}
+          />
+        ))}
+
+        <Surface blurSize="lg" w="80rem" h="80rem" />
+      </StyledSection>
     </Page>
   );
-}
-
-interface IndexPageProps {
-  props: {
-    introduction: IntroductionProps;
-    projects: ProjectProps[];
-  };
-}
-
-async function fetchData(retry?: number): Promise<any> {
-  const introductionRef = FireStoreApi.doc(
-    backendApi.database,
-    "introduction/EuXSqy14wJMWZbk0osOa"
-  );
-
-  let i = 0;
-  do {
-    try {
-      const introductionUnsubscribe = await getDoc(introductionRef);
-      const cardProps = introductionUnsubscribe.data() as IntroductionCardProps;
-
-      const projectsQuery = FireStoreApi.query(
-        FireStoreApi.collection(backendApi.database, "projects")
-      );
-      let projects: ProjectProps[] = [];
-      const docs = await getDocs(projectsQuery);
-      docs.forEach((project) => {
-        projects.push(project.data() as ProjectProps);
-      });
-
-      return {
-        introduction: {
-          cardProps,
-        },
-        projects,
-      };
-    } catch (error) {
-      ++i;
-      console.log(`retry: ${i}/${retry ?? "NaN"}`);
-      if (!retry || i >= retry) {
-        throw error;
-      }
-    }
-  } while (true);
-}
-
-async function fetchDataLocal(): Promise<IndexPageProps> {
-  const dataDirectory = path.join(process.cwd(), "data");
-  const cardMatter = matter(
-    await readFile(path.join(dataDirectory, "introduction-card.md"), "utf-8")
-  );
-  const introduction: IntroductionProps = {
-    introductionCardProps: {
-      title: cardMatter.data.title,
-      picture: cardMatter.data.picture,
-      paragraphs: [cardMatter.content],
-    },
-  };
-
-  const projectsDir = path.join(dataDirectory, "projects");
-  const projectsFiles = await (
-    await readdir(projectsDir)
-  ).map((fileName: string) => path.join(projectsDir, fileName));
-
-  const projects = await Promise.all(
-    projectsFiles.map(async (fileName): Promise<ProjectProps> => {
-      const matterResult = matter(await readFile(fileName, "utf-8"));
-      return {
-        title: matterResult.data.title,
-        picture: matterResult.data.picture,
-        paragraphs: [matterResult.content],
-      };
-    })
-  );
-
-  return {
-    props: {
-      introduction,
-      projects,
-    },
-  };
-}
-
-export async function getStaticProps(): Promise<IndexPageProps> {
-  return await fetchDataLocal(); //fetchData(10),
 }
