@@ -39,15 +39,15 @@ export default class Theme implements DefaultTheme {
         default: new Color("white"),
       },
       primary: {
-        main: new Color("#1b27b3"),
-        light: new Color("#6151e6"),
-        dark: new Color("#000182"),
+        main: new Color("#0f44f0"),
+        light: new Color("#3f69f3"),
+        dark: new Color("#0c36c0"),
         contrastText: new Color("white"),
       },
       secondary: {
-        main: new Color("#440044"),
-        light: new Color("#723070"),
-        dark: new Color("#23001e"),
+        main: new Color("#7721cb"),
+        light: new Color("#6631d5"),
+        dark: new Color("#8711c1"),
         contrastText: new Color("white"),
       },
     };
