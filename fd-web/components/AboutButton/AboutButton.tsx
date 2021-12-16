@@ -7,14 +7,14 @@ import { ButtonProps } from "../../glass-ui/Button/interfaces";
 import { StyledAboutButton, AboutButtonContainer } from "./style";
 
 export default function AboutButton(props: ButtonProps) {
-  const ref = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState<boolean>(false);
   useEffect(() => {
-    if (!ref.current) {
+    if (!containerRef.current) {
       return;
     }
 
-    const elm = ref.current;
+    const elm = containerRef.current;
     elm.addEventListener("mouseenter", () => {
       elm.classList.add("hover");
     });
@@ -29,7 +29,7 @@ export default function AboutButton(props: ButtonProps) {
   }, [loaded]);
 
   return (
-    <AboutButtonContainer ref={ref} className="buttonContainer">
+    <AboutButtonContainer ref={containerRef} className="buttonContainer">
       <Link href="/about" passHref>
         <StyledAboutButton forwardedAs="a" alt="en savoir plus sur Benjamin" {...props}>
           <div className="pictureOctogon">
