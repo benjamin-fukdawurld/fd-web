@@ -7,7 +7,8 @@
     "export": "next export",
     "prod": "next build && next export",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "echo 'no test to run'; -1"
   },
   "dependencies": {
     "@types/color": "^3.0.2",
