@@ -3,21 +3,17 @@ import BaseSection, { SectionProps } from "../../glass-ui/Section";
 
 export const Section = styled(BaseSection)<SectionProps>`
   padding: 6rem 0 4rem;
-  display: flex;
-  algin-items: center;
-  justify-content: center;
-  flex-flow: column nowrap;
-  overflow: hidden;
 
   .projects {
     position: relative;
     transform-style: preserve-3d;
 
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: center;
-  padding: 6rem 0 4rem;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0;
+  }
 
   .shorts {
     width: 100%;
