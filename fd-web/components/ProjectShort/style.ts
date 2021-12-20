@@ -146,7 +146,7 @@ export const ProjectShortDescriptionContainer = styled(Surface)<SurfaceProps>`
   }
 `;
 
-export const ProjectShortSection = styled(Surface)<SurfaceProps>`
+export const ProjectShortSection = styled(Surface)<SurfaceProps & { visible: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -171,7 +171,8 @@ export const ProjectShortSection = styled(Surface)<SurfaceProps>`
     box-shadow: 0 0 15px -4px ${(props) => props.theme.palette.primary.main.string()},
       0 0 5px -2px ${(props) => props.theme.palette.secondary.main.string()};
 
-    animation: ${pulseAnim} ${(props) => Math.random() * 2 + 1.2}s infinite linear;
+    animation: ${pulseAnim} ${(props) => Math.random() * 2 + 1.2}s infinite linear
+      ${(props) => (props.visible ? "running" : "paused")};
   }
 `;
 
