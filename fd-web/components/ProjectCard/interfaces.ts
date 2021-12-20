@@ -15,4 +15,5 @@ export interface ProjectDescriptionProps {
 export interface ProjectCardProps {
   image: ProjectImageProps;
   description: ProjectDescriptionProps;
+  visible: boolean;
 }
