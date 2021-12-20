@@ -1,13 +1,13 @@
 import styled, { keyframes } from "styled-components";
 import Surface, { SurfaceProps } from "../../../glass-ui/Surface";
 
-const cloudAnim = (index: number, count: number) => keyframes`
+const cloudAnim = keyframes`
   0% {
-    transform: translateX(-${100 * index}%)
+    transform: translateX(-100%)
   }
 
   100% {
-    transform: translateX(${100 * (count - index - 1)}%)
+    transform: translateX(200%)
   }
 `;
 
@@ -32,7 +32,7 @@ const CloudContainer = styled(Surface)<SurfaceProps>`
       top: 0;
       left: 0;
       background: ${(props) => props.theme.palette.primary.dark.alpha(0.4).string()};
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
       -webkit-mask-image: url("images/cloud_sm.webp");
       mask-image: url("images/cloud_sm.webp");

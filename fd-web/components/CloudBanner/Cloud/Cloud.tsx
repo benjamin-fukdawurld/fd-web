@@ -6,6 +6,7 @@ export default function Cloud(props: any) {
       <div className="clouds">
         <div className="image"></div>
         <div className="image"></div>
+        <div className="image"></div>
       </div>
     </CloudContainer>
   );
