@@ -12,9 +12,10 @@ import Loader from "../components/Loader";
 export default function Home(props: any) {
   const [sceneLoaded, setSceneLoaded] = useState<boolean>(false);
   const loaderRef = useRef<HTMLElement>(null);
+
   return (
     <Page
-      title="Tableau de bord - Fanatik Development"
+      title="Benjamin Zamour - Ingénieur web full stack"
       description="Indicateurs et gestion de contenu de FD"
     >
       <SolarSystemComponent
