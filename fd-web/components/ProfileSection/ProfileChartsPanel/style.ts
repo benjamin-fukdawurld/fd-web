@@ -78,15 +78,6 @@ export const ProfilePanel = styled(Card)<CardProps>`
     }
   }
 
-  .skills {
-    ul {
-      font-size: 1.125rem;
-      li {
-        margin: 2rem 0.5rem;
-      }
-    }
-  }
-
   .charts {
     width: 100%;
     height: 100%;
