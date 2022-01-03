@@ -125,8 +125,7 @@ const IntroductionCardContainer = styled(GlassSurface)<IntroductionCardProps>`
       ${(props) => (props.visible ? "running" : "paused")};
   }
 
-  animation: ${entranceAnim} 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both
-    ${(props) => (props.visible ? "running" : "paused")};
+  animation: ${entranceAnim} 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `;
 
 export { Card, IntroductionCardContainer };

@@ -3,6 +3,11 @@ import BaseSection, { SectionProps } from "../../glass-ui/Section";
 
 export const Section = styled(BaseSection)<SectionProps>`
   padding: 6rem 0 4rem;
+  display: flex;
+  algin-items: center;
+  justify-content: center;
+  flex-flow: column nowrap;
+  overflow: hidden;
 
   .projects {
     position: relative;
