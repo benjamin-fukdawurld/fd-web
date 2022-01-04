@@ -1,10 +1,7 @@
 import Page from "../components/Page";
-import LandingSection from "../components/LandingSection";
-import ProjectSection from "../components/ProjectSection";
-import ProfileSection from "../components/ProfileSection";
+import AboutSection from "../components/AboutSection";
 
 import SolarSystemComponent from "../components/SolarSystemComponent";
-import CloudBanner from "../components/CloudBanner";
 import { useRef, useState } from "react";
 
 import Loader from "../components/Loader";
@@ -26,7 +23,13 @@ export default function Home(props: any) {
           }
         }}
       />
-      {!sceneLoaded ? <Loader ref={loaderRef} /> : <></>}
+      {!sceneLoaded ? (
+        <Loader ref={loaderRef} />
+      ) : (
+        <>
+          <AboutSection />
+        </>
+      )}
     </Page>
   );
 }
