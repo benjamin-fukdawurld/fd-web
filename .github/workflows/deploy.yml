@@ -1,4 +1,4 @@
-name: Build next.js
+name: Build & deploy next.js
 
 on: [push]
 
@@ -9,8 +9,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Building docker image
-        run: docker build -t fd-web ./fd-web
+      - name: go to project directory
+        run: cd fd-web
 
-      - name: Run tests
-        run: docker run --name fd-web -p 3001:3000 fd-web yarn build && yarn export
+      - name: Building docker image
+        run: docker build -t fd-web ./
+
+      - name: Generate project
+        run: docker run --name fd-web -v ./out:/usr/app/out -p 3001:3000 fd-web yarn prod
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: gh-pages
+          folder: out
