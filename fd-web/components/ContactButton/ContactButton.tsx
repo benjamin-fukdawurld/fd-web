@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import Button from "../../glass-ui/Button";
 
 import { ContactButton as StyledButton } from "./style";
@@ -11,11 +9,9 @@ const ContactButton = forwardRef<HTMLElement, any>((props, ref) => {
   const theme = useTheme();
   return (
     <StyledButton ref={ref} {...props}>
-      <Link href="/contact" passHref>
-        <Button forwardedAs="a" theme={theme}>
-          Contact
-        </Button>
-      </Link>
+      <Button forwardedAs="a" theme={theme} href="mailto:benjamin.zamour@gmail.com">
+        Contact
+      </Button>
     </StyledButton>
   );
 });
