@@ -6,7 +6,7 @@ import { GlassSurfaceProps, defaultProps } from "./interfaces";
 
 const GlassSurface = forwardRef<HTMLElement, GlassSurfaceProps>(
   (
-    { blurSize, backdropFilter, ...props }: GlassSurfaceProps,
+    { blurSize, backdropFilter, forwardedProps, ...props }: GlassSurfaceProps,
     ref: React.ForwardedRef<HTMLElement>
   ) => {
     const theme: DefaultTheme = useTheme();
@@ -41,7 +41,9 @@ const GlassSurface = forwardRef<HTMLElement, GlassSurfaceProps>(
         break;
     }
 
-    return <Surface backdropFilter={filters} {...props} ref={ref} />;
+    return (
+      <Surface backdropFilter={filters} {...props} forwardedProps={forwardedProps} ref={ref} />
+    );
   }
 );
 

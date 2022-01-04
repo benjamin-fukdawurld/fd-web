@@ -34,7 +34,7 @@ export interface BaseSurfaceProps {
   p?: string;
 }
 
-export interface SurfaceProps<P extends object = {}> extends BaseSurfaceProps {
+export interface SurfaceProps<P extends object = any> extends BaseSurfaceProps {
   ref?: any;
   forwardedAs?: string | React.ElementType;
   forwardedProps?: P;

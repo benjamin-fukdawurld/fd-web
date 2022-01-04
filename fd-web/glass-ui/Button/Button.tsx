@@ -22,9 +22,7 @@ const Button = forwardRef<HTMLElement | null, ButtonProps>(
       <ButtonContainer
         ref={combinedRefs}
         forwardedAs={forwardedAs ?? "button"}
-        forwardedProps={{
-          ...forwardedProps,
-        }}
+        forwardedProps={forwardedProps}
         {...props}
         onClick={(event: MouseEvent<HTMLButtonElement>) => {
           const elm = event.target as HTMLButtonElement;

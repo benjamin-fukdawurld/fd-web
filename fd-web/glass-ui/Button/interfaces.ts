@@ -9,6 +9,7 @@ export interface BaseButtonProps {
   variant?: ButtonVariant;
   size?: SizeName;
   disabled?: boolean;
+  href?: string;
 }
 
 export type ButtonProps = BaseButtonProps & GlassSurfaceProps;
