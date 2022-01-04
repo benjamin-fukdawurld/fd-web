@@ -1,73 +1,42 @@
-import Page from "../components/utils/Page";
-import Introduction from "../components/Introduction";
-import Projects from "../components/Projects";
+import Page from "../components/Page";
+import LandingSection from "../components/LandingSection";
+import ProjectSection from "../components/ProjectSection";
+import ProfileSection from "../components/ProfileSection";
 
-import { IntroductionProps } from "../components/Introduction/interfaces";
-import { ProjectProps } from "../components/Projects/interfaces";
+import SolarSystemComponent from "../components/SolarSystemComponent";
+import CloudBanner from "../components/CloudBanner";
+import { useRef, useState } from "react";
 
-import backendApi from "../firebase/BackendApi";
-import * as FireStoreApi from "firebase/firestore";
-import { getDoc, getDocs } from "firebase/firestore";
-import { IntroductionCardProps } from "../components/Introduction/IntroductionCard/interfaces";
+import Loader from "../components/Loader";
 
-export default function IntroductionPage(props: {
-  introduction: IntroductionProps;
-  projects: ProjectProps[];
-}) {
+export default function Home(props: any) {
+  const [sceneLoaded, setSceneLoaded] = useState<boolean>(false);
+  const loaderRef = useRef<HTMLElement>(null);
+
   return (
     <Page
-      title={"Benjamin ZAMOUR - Fanatik Development"}
-      description={"Portflio de Benjamin ZAMOUR"}
+      title="Benjamin Zamour - Ingénieur web full stack"
+      description="Indicateurs et gestion de contenu de FD"
     >
-      <Introduction {...props.introduction} />
-      <Projects projects={props.projects} />
+      <SolarSystemComponent
+        onLoaded={() => {
+          setTimeout(() => setSceneLoaded(true), 1000);
+          if (loaderRef.current) {
+            loaderRef.current.classList.add("fade");
+          }
+        }}
+      />
+      {!sceneLoaded ? (
+        <Loader ref={loaderRef} />
+      ) : (
+        <>
+          <LandingSection />
+          <CloudBanner title="Projets" />
+          <ProjectSection />
+          <CloudBanner title="Profil" />
+          <ProfileSection />
+        </>
+      )}
     </Page>
   );
-}
-
-interface IndexPageProps {
-  props: {
-    introduction: IntroductionProps;
-    projects: ProjectProps[];
-  };
-}
-
-export async function getStaticProps(): Promise<IndexPageProps> {
-  const introductionRef = FireStoreApi.doc(
-    backendApi.database,
-    "introduction/EuXSqy14wJMWZbk0osOa"
-  );
-  const introductionUnsubscribe = await getDoc(introductionRef);
-  const cardProps = introductionUnsubscribe.data() as IntroductionCardProps;
-
-  console.log(cardProps);
-
-  const projectsQuery = FireStoreApi.query(
-    FireStoreApi.collection(backendApi.database, "projects")
-  );
-  let projects: ProjectProps[] = [];
-  (await getDocs(projectsQuery)).forEach((project) => {
-    projects.push(project.data() as ProjectProps);
-  });
-
-  return {
-    props: {
-      introduction: {
-        cardProps,
-      },
-
-      projects: [
-        ...projects,
-        ...projects,
-        ...projects,
-        ...projects,
-        ...projects,
-        ...projects,
-        ...projects,
-        ...projects,
-        ...projects,
-        ...projects,
-      ],
-    },
-  };
 }
