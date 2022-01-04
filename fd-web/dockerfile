@@ -12,6 +12,8 @@ RUN yarn install
 
 COPY . /usr/src/app
 
+VOLUME "usr/src/app/out"
+
 RUN yarn build
 
 CMD [ "yarn", "start" ]
