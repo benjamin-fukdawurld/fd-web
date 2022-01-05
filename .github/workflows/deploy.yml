@@ -1,0 +1,25 @@
+name: Build & deploy next.js
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: go to project directory
+        run: cd fd-web
+
+      - name: Building docker image
+        run: docker build -t fd-web .
+
+      - name: Generate project
+        run: docker run --name fd-web -v ./out:/usr/app/out -p 3001:3000 fd-web yarn prod
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: gh-pages
+          folder: out
