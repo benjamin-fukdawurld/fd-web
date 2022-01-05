@@ -13,7 +13,7 @@ jobs:
         run: cd fd-web
 
       - name: Building docker image
-        run: docker build -t fd-web ./
+        run: docker build -t fd-web .
 
       - name: Generate project
         run: docker run --name fd-web -v ./out:/usr/app/out -p 3001:3000 fd-web yarn prod
